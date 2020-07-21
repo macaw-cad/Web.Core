@@ -26,11 +26,6 @@ namespace Web.Core.Mvc
 
         private readonly ExceptionProblemDetailsOptions _exceptionDetailsOptions;
 
-        public ExceptionProblemDetailsJsonConverter(IOptions<ExceptionProblemDetailsOptions> options)
-        {
-            _exceptionDetailsOptions = options.Value;
-        }
-
         public ExceptionProblemDetailsJsonConverter(ExceptionProblemDetailsOptions options)
         {
             _exceptionDetailsOptions = options ?? new ExceptionProblemDetailsOptions();

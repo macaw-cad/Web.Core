@@ -2,7 +2,7 @@
 {
     public class ExceptionProblemDetailsOptions
     {
-        public const string ExceptionProblemDetails = "ExceptionProblemDetails";
+        public const string ExceptionProblemDetailsSectionName = "ExceptionProblemDetails";
 
         public DetailLevel Details { get; set; }
         public int Depth { get; set; }

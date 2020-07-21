@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -15,7 +16,7 @@ namespace Web.Core.HealthChecks
 
         public ApplicationInfoHealthCheck(IHostEnvironment environment)
         {
-            _environment = environment ?? throw new System.ArgumentNullException(nameof(environment));
+            _environment = environment ?? throw new ArgumentNullException(nameof(environment));
         }
 
         public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)

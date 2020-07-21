@@ -25,7 +25,7 @@ namespace Acme.Core.DependencyInjection
             jsonSerializerOptions.Converters.Add(new ErrorProblemDetailsJsonConverterFactory());
             jsonSerializerOptions.Converters.Add(
                 new ExceptionProblemDetailsJsonConverter(
-                    configuration.GetSection(ExceptionProblemDetailsOptions.ExceptionProblemDetails).Get<ExceptionProblemDetailsOptions>()
+                    configuration.GetSection(ExceptionProblemDetailsOptions.ExceptionProblemDetailsSectionName).Get<ExceptionProblemDetailsOptions>()
                 ));
 
             return jsonSerializerOptions;
