@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
+using Web.Core.DependencyInjection;
 using Web.Core.Infrastructure;
 using Web.Core.WebApi.DependencyInjection;
 using Web.Core.WebApi.Middleware;
@@ -29,7 +30,11 @@ namespace Acme.WebApp
             services.AddTransient<ProblemDetailsFactory, ErrorDetailsProblemDetailsFactory>(); // must be called after 'services.AddControllers();' as that is where the default factory is registered.            
 
             services.AddLogging();
-            services.ConfigureSwaggerDocWithoutVersioning("Acme.WebApp - API Documentation");
+            services.ConfigureSwaggerDocWithoutVersioning("Acme.WebApp - API Documentation", "Healthchecks on:<ul><li><a href='/hc'>Minimal info (/hc)</a></li><li><a href='/mon'>Detailed info (/mon)</a></li></ul>");
+
+            services.AddHealthChecks()
+                .ApplicationInfoHealthCheck("Acme.WebApp")
+                ;
         }
 
         public void Configure(IApplicationBuilder app)
@@ -49,6 +54,8 @@ namespace Acme.WebApp
                 app.UseExceptionHandler("/Error");
             }
             app.UseMiddleware<ErrorHandlingMiddleware>(); // ErrorHandlingMiddleware must be after UseExceptionHandler and/or UseDeveloperExceptionPage, otherwise no destiction can be between a json or html response
+
+            app.UseHealthCheckEndPoints();
 
             app.UseHsts();
             app.UseHttpsRedirection();

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
+using Web.Core.DependencyInjection;
 using Web.Core.Infrastructure;
 using Web.Core.Mvc;
 using Web.Core.WebApi.DependencyInjection;
@@ -31,7 +32,11 @@ namespace Acme.WebApi
 
             services.AddLogging();
             services.ConfigureApiVersioning();
-            services.ConfigureSwaggerDocWithVersioning("Acme.WebApi - API Documentation");
+            services.ConfigureSwaggerDocWithVersioning("Acme.WebApi - API Documentation", "Healthchecks on:<ul><li><a href='/hc'>Minimal info (/hc)</a></li><li><a href='/mon'>Detailed info (/mon)</a></li></ul>");
+
+            services.AddHealthChecks()
+                .ApplicationInfoHealthCheck("Acme.WebApi")
+                ;
 
             services.Configure<ExceptionProblemDetailsOptions>(Configuration.GetSection(ExceptionProblemDetailsOptions.ExceptionProblemDetails));
         }
@@ -47,6 +52,8 @@ namespace Acme.WebApi
                     Assembly.GetEntryAssembly(),
                 });
             }
+
+            app.UseHealthCheckEndPoints();
 
             app.UseHsts();
             app.UseHttpsRedirection();
