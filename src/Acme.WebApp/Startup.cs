@@ -66,6 +66,7 @@ namespace Acme.WebApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.AddPing();
             });
         }
     }
