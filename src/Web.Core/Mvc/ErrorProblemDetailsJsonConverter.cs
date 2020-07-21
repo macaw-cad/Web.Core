@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Web.Core.Extensions;
 
 namespace Web.Core.Mvc
 {
@@ -144,19 +145,9 @@ namespace Web.Core.Mvc
         {
             foreach (var kvp in values)
             {
-                writer.WritePropertyName(FormatNaming(kvp.Key, options));
+                writer.WritePropertyName(kvp.Key.ToJsonPropertyName(options));
                 JsonSerializer.Serialize(writer, kvp.Value, kvp.Value?.GetType() ?? typeof(object), options);
             }
-        }
-
-        private static string FormatNaming(string value, JsonSerializerOptions options)
-        {
-            if (!string.IsNullOrWhiteSpace(value) && options?.PropertyNamingPolicy == JsonNamingPolicy.CamelCase)
-            {
-                return $"{value.Substring(0, 1).ToLowerInvariant()}{value.Substring(1)}";
-            }
-
-            return value;
         }
 
         private static IDictionary<string, object> ToDictionaryWithType<U>(U errorDetails) where U : IErrorDetails

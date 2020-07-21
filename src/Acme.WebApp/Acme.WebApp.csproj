@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Acme.Core\Acme.Core.csproj" />
     <ProjectReference Include="..\Acme.WebApiLibrary.Data\Acme.WebApiLibrary.Data.csproj" />
     <ProjectReference Include="..\Acme.WebApiLibrary.MoreData\Acme.WebApiLibrary.MoreData.csproj" />
   </ItemGroup>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Version>0.0.1</Version>  
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Web.Core.WebApi\Web.Core.WebApi.csproj" />
+    <ProjectReference Include="..\Web.Core\Web.Core.csproj" />
+  </ItemGroup>
+  
+</Project>
