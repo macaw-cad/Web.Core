@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using System.Reflection;
 using Web.Core.DependencyInjection;
 using Web.Core.Infrastructure;
-using Web.Core.Mvc;
 using Web.Core.WebApi.DependencyInjection;
 using Web.Core.WebApi.Middleware;
 
@@ -37,8 +36,6 @@ namespace Acme.WebApi
             services.AddHealthChecks()
                 .ApplicationInfoHealthCheck("Acme.WebApi")
                 ;
-
-            services.Configure<ExceptionProblemDetailsOptions>(Configuration.GetSection(ExceptionProblemDetailsOptions.ExceptionProblemDetails));
         }
 
         public void Configure(IApplicationBuilder app)

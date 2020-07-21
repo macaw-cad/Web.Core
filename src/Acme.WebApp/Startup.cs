@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
 using Web.Core.DependencyInjection;
+using Web.Core.HealthChecks;
 using Web.Core.Infrastructure;
 using Web.Core.WebApi.DependencyInjection;
 using Web.Core.WebApi.Middleware;
@@ -34,6 +35,7 @@ namespace Acme.WebApp
 
             services.AddHealthChecks()
                 .ApplicationInfoHealthCheck("Acme.WebApp")
+                .AddApplicationEndpointsHealthCheck("ping", Configuration.GetSection(HealthCheckOptions.HealthCheckSectionName).Get<HealthCheckOptions>());
                 ;
         }
 
