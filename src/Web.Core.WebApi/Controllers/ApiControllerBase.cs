@@ -36,7 +36,7 @@ namespace Web.Core.WebApi.Controllers
         [OpenApiIgnore]
         public override BadRequestObjectResult BadRequest([ActionResultObjectValue] ModelStateDictionary modelState)
         {
-            return base.BadRequest(ProblemDetailsFactory.CreateValidationProblemDetails(HttpContext, modelState));
+            return base.ValidationProblem(modelState) as BadRequestObjectResult;
         }
 
         [OpenApiIgnore]

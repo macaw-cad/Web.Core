@@ -64,11 +64,12 @@ namespace Acme.WebApi.Controllers
         /// Serveral Bad request implementations of version 2 of the versioned backend-to-backend service.
         /// </summary>
         /// <remarks>
-        /// Supported arguments: 0 is default value and the Ok case, 1..2 give errors.
+        /// Supported arguments: 0 is default value and the Ok case, 1..3 give errors.
         /// 
         /// * Ok result - returns array of two strings
         /// * 1: 400 - BadRequest with modelstate errors
-        /// * 2: 400 - BadRequest with details of `AcmeDataErrorDetails`
+        /// * 2: 400 - BadRequest with modelstate errors (via ValidationProblem)
+        /// * 3: 400 - BadRequest with details of `AcmeDataErrorDetails`
         /// </remarks>
         /// <param name="value">A value 1..2 for different error conditions.</param>
         /// <returns>An array with two sample strings.</returns>
@@ -90,6 +91,13 @@ namespace Acme.WebApi.Controllers
                     return BadRequest(modelState: ModelState);
 
                 case 2:
+                    ModelState.AddModelError("modelState1", "This is a invalid model 1-1 ");
+                    ModelState.AddModelError("ModelState1", "This is another invalid model 1-2");
+                    ModelState.AddModelError("modelState2", "This is another invalid model 2");
+
+                    return ValidationProblem(ModelState);
+
+                case 3:
                     return BadRequest(new AcmeDataErrorDetails
                     {
                         BooleanValue = true,
