@@ -6,7 +6,7 @@ namespace Web.Core.HealthChecks
     {
         public const string HealthCheckSectionName = "HealthChecks";
 
-        public IEnumerable<HealthCheckEndpointItem> Endpoints { get; set; }
+        public IEnumerable<HealthCheckEndpointItem> ApplicationEndpoints { get; set; }
 
         public class HealthCheckEndpointItem
         {

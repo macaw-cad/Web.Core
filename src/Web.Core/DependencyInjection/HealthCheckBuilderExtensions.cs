@@ -38,7 +38,7 @@ namespace Web.Core.DependencyInjection
 
             if (options != null)
             {
-                foreach(var item in options.Endpoints)
+                foreach(var item in options.ApplicationEndpoints)
                 {
                     if (String.IsNullOrWhiteSpace(item.Name))
                     {
