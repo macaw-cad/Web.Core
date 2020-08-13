@@ -1,7 +1,51 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
+    var settings = (Acme.Core.Settings.AcmeSettings)ViewData["settings"];
+    var configErrors = (List<string>)ViewData["configErrors"];
+    var configLines = (List<string>)ViewData["configLines"];
+}
+
+@section Head {
+    <style>
+    p {
+        background-color: @settings.BackgroundColor;
+        color: @settings.FontColor;
+        font-size: @settings.FontSize;
+    }
+    </style>
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>    
+    <h1 class="display-4">Welcome</h1>
+</div>
+
+<p>
+    @settings.Message
+    <br />
+    @settings.SomethingImportant
+</p>
+
+<div>
+    @if (configErrors != null && configErrors.Any())
+    {
+        <ul>
+            @foreach (var line in configErrors)
+            {
+                <li>@line</li>
+            }
+        </ul>
+    }
+
+    <hr />
+
+    @if (configLines != null && configLines.Any())
+    {
+        <ul>
+            @foreach (var line in configLines)
+            {
+                <li>@line</li>
+            }
+        </ul>
+    }
 </div>

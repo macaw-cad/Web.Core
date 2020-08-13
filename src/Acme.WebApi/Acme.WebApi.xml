@@ -24,6 +24,14 @@
             <param name="value">A value 0..3 for different error conditions.</param>
             <returns>An array with two sample strings.</returns>
         </member>
+        <member name="M:Acme.WebApi.Controllers.DataController.Settings">
+            <summary>
+            Displays all Amce settings and a summary of all validation errors (if any)
+            </summary>
+            <remarks>
+            </remarks>
+            <returns>An array of strings with configuration information.</returns>
+        </member>
         <member name="T:Acme.WebApi.Controllers.DataControllerV2">
             <summary>
             Controller (v2) to produce some test data and senario's for the WebApi.Core

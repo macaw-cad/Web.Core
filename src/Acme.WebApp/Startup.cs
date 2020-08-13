@@ -1,4 +1,5 @@
 using Acme.Core.DependencyInjection;
+using Acme.Core.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
+using Web.Core.Configuration;
 using Web.Core.DependencyInjection;
 using Web.Core.HealthChecks;
 using Web.Core.Infrastructure;
@@ -27,16 +29,20 @@ namespace Acme.WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AcmeSettings>(Configuration.GetSection("Acme:Settings"));
+
             services.AddControllersWithViewsAndJsonSerializerOptions(Configuration);
             services.AddTransient<ProblemDetailsFactory, ErrorDetailsProblemDetailsFactory>(); // must be called after 'services.AddControllers();' as that is where the default factory is registered.            
 
             services.AddLogging();
-            services.ConfigureSwaggerDocWithoutVersioning("Acme.WebApp - API Documentation", "Healthchecks on:<ul><li><a href='/hc'>Minimal info (/hc)</a></li><li><a href='/mon'>Detailed info (/mon)</a></li></ul>");
+            services.ConfigureSwaggerDocWithoutVersioning(Configuration.GetValue<string>("Swagger:Title"), Configuration.GetValue<string>("Swagger:Description"));
 
             services.AddHealthChecks()
                 .ApplicationInfoHealthCheck("Acme.WebApp")
                 .AddApplicationEndpointsHealthCheck("ping", Configuration.GetSection(HealthCheckOptions.HealthCheckSectionName).Get<HealthCheckOptions>());
                 ;
+
+            services.AddTransient<IConfigurationValidator, ConfigurationValidator>();
         }
 
         public void Configure(IApplicationBuilder app)

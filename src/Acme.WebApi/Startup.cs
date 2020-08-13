@@ -1,11 +1,14 @@
 using Acme.Core.DependencyInjection;
+using Acme.Core.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Linq;
 using System.Reflection;
+using Web.Core.Configuration;
 using Web.Core.DependencyInjection;
 using Web.Core.Infrastructure;
 using Web.Core.WebApi.DependencyInjection;
@@ -26,16 +29,20 @@ namespace Acme.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AcmeSettings>(Configuration.GetSection("Acme:Settings"));
+
             services.AddApiControllersWithJsonSerializerOptions(Configuration);
             services.AddTransient<ProblemDetailsFactory, ErrorDetailsProblemDetailsFactory>(); // must be called after `services.AddControllers();` as that is where the default factory is registered.            
 
             services.AddLogging();
             services.ConfigureApiVersioning();
-            services.ConfigureSwaggerDocWithVersioning("Acme.WebApi - API Documentation", "Healthchecks on:<ul><li><a href='/hc'>Minimal info (/hc)</a></li><li><a href='/mon'>Detailed info (/mon)</a></li></ul>");
+            services.ConfigureSwaggerDocWithVersioning(Configuration.GetValue<string>("Swagger:Title"), Configuration.GetValue<string>("Swagger:Description"));
 
             services.AddHealthChecks()
                 .ApplicationInfoHealthCheck("Acme.WebApi")
                 ;
+
+            services.AddTransient<IConfigurationValidator, ConfigurationValidator>();
         }
 
         public void Configure(IApplicationBuilder app)

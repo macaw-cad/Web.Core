@@ -1,3 +1,4 @@
+using Acme.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -7,14 +8,7 @@ namespace Acme.WebApp
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            AcmeProgram.CreateHostBuilder<Startup>(args).Build().Run();
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
     }
 }

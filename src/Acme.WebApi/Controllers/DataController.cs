@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Acme.Core.Settings;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Web.Core.Configuration;
 using Web.Core.Mvc;
 using Web.Core.WebApi.Controllers;
 
@@ -16,10 +21,14 @@ namespace Acme.WebApi.Controllers
     public class DataController : ApiControllerBase
     {
         private readonly ILogger<DataController> _logger;
+        private readonly IConfigurationValidator _configValidator;
+        private readonly AcmeSettings _acmeSettings;
 
-        public DataController(ILogger<DataController> logger)
+        public DataController(ILogger<DataController> logger, IConfigurationValidator configValidator, IOptionsSnapshot<AcmeSettings> options)
         {
             _logger = logger;
+            _configValidator = configValidator;
+            _acmeSettings = options?.Value;
         }
 
         /// <summary>
@@ -59,6 +68,40 @@ namespace Acme.WebApi.Controllers
                 "Value 1 from Test.WebApp.WebApi version 1",
                 "Value 2 from Test.WebApp.WebApi version 1"
             });
+        }
+
+        /// <summary>
+        /// Displays all Amce settings and a summary of all validation errors (if any)
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <returns>An array of strings with configuration information.</returns>
+        [HttpGet("settings")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(string[]), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ExceptionProblemDetails), StatusCodes.Status500InternalServerError)]
+        public IActionResult Settings()
+        {
+            var output = new List<string>() {
+                "= Acme Settings ================",
+                $"BackgroundColor: {_acmeSettings.BackgroundColor}",
+                $"FontColor: {_acmeSettings.FontColor}",
+                $"FontSize: {_acmeSettings.FontSize}",
+                $"Message: {_acmeSettings.Message}",
+                $"SomethingImportant: {_acmeSettings.SomethingImportant}",
+            };
+
+            var errors = _configValidator.Validate();
+            if (errors.Any())
+            {
+                output.Add("= Validation Errors ============");
+                output.AddRange(errors);
+            }
+
+            output.Add("= All Settings =================");
+            output.AddRange(_configValidator.GetAllSettings());
+
+            return Ok(output);
         }
     }
 }
