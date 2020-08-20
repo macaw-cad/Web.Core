@@ -63,5 +63,18 @@ namespace Web.Core.WebApi.Controllers
         {
             return base.NotFound(ProblemDetailsFactory.CreateErrorProblemDetails(HttpContext, errorDetails));
         }
+
+        [OpenApiIgnore]
+        [Obsolete("Intentionally hidden from base, in favour of Conflict<T> with custom ErrorDetails.", true)]
+        public new ConflictObjectResult Conflict([ActionResultObjectValue] object error)
+        {
+            throw new NotSupportedException("Intentionally hidden from base, in favour of Conflict<T> with custom ErrorDetails.");
+        }
+
+        [OpenApiIgnore]
+        public ConflictObjectResult Conflict<T>([ActionResultObjectValue] T errorDetails) where T : IErrorDetails
+        {
+            return base.Conflict(ProblemDetailsFactory.CreateErrorProblemDetails(HttpContext, errorDetails));
+        }
     }
 }

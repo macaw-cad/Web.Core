@@ -7,7 +7,7 @@ namespace Web.Core.DependencyInjection
 {
     public static class HealthCheckBuilderExtensions
     {
-        public static IHealthChecksBuilder ApplicationInfoHealthCheck(this IHealthChecksBuilder builder, string name, IEnumerable<string> tags = null)
+        public static IHealthChecksBuilder AddApplicationInfoHealthCheck(this IHealthChecksBuilder builder, string name, IEnumerable<string> tags = null)
         {
             if (builder is null)
             {

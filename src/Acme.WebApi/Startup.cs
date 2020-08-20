@@ -42,7 +42,7 @@ namespace Acme.WebApi
                 );
 
             services.AddHealthChecks()
-                .ApplicationInfoHealthCheck("Acme.WebApi")
+                .AddApplicationInfoHealthCheck("Acme.WebApi")
                 ;
 
             services.AddTransient<IConfigurationValidator, ConfigurationValidator>();
