@@ -36,7 +36,7 @@ namespace Acme.WebApi
 
             services.AddLogging();
             services.ConfigureApiVersioning();
-            services.ConfigureSwaggerDocWithVersioning(
+            services.ConfigureSwaggerDoc(
                 Configuration.GetValue<string>(AcmeConstants.Configuration.Swagger.Title),
                 Configuration.GetValue<string>(AcmeConstants.Configuration.Swagger.Description)
                 );

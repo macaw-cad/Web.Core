@@ -34,17 +34,48 @@ namespace Web.Core.WebApi.DependencyInjection
             return services;
         }
 
-        public static IServiceCollection ConfigureSwaggerDocWithoutVersioning(this IServiceCollection services, string swaggerTitle, string swaggerDescription = null)
+        public static IServiceCollection ConfigureSwaggerDoc(this IServiceCollection services, string swaggerTitle, string swaggerDescription = null)
         {
             if (services is null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
+            try
+            {
+                // Handle Api with versioning
+                var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    AddOpenApiDocument(services, swaggerTitle, swaggerDescription, description);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // Handle Api without versioning
+                AddOpenApiDocument(services, swaggerTitle, swaggerDescription);
+            }
+
+            return services;
+        }
+
+        private static void AddOpenApiDocument(IServiceCollection services, string swaggerTitle, string swaggerDescription = null, ApiVersionDescription description = null)
+        {
             services.AddOpenApiDocument(settings =>
             {
-                settings.Title = swaggerTitle;
-                settings.Description = swaggerDescription;
+                settings.Title = swaggerTitle;               
+
+                if (description != null)
+                {
+                    settings.Description = description.IsDeprecated ? $@"{swaggerDescription}<h4 style=""color: #f93e3e;"">This API version has been deprecated</h4>" : swaggerDescription;
+                    settings.Version = $"v{description.ApiVersion.MajorVersion}";
+                    settings.DocumentName = description.GroupName;
+                    settings.ApiGroupNames = new[] { settings.Version };
+                }
+                else
+                {
+                    settings.Description = swaggerDescription;
+                }
 
                 // Add an authenticate button to Swagger for JWT tokens
                 settings.OperationProcessors.Add(new OperationSecurityScopeProcessor("JWT token"));
@@ -58,43 +89,6 @@ namespace Web.Core.WebApi.DependencyInjection
                     }
                 );
             });
-
-            return services;
-        }
-
-        public static IServiceCollection ConfigureSwaggerDocWithVersioning(this IServiceCollection services, string swaggerTitle, string swaggerDescription = null)
-        {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-            foreach (var description in provider.ApiVersionDescriptions)
-            {
-                services.AddOpenApiDocument(settings =>
-                {
-                    settings.Version = $"v{description.ApiVersion.MajorVersion}";
-                    settings.Title = swaggerTitle;
-                    settings.Description = description.IsDeprecated ? $@"{swaggerDescription}<h4 style=""color: #f93e3e;"">This API version has been deprecated</h4>" : swaggerDescription;
-                    settings.DocumentName = description.GroupName;
-                    settings.ApiGroupNames = new[] { settings.Version };
-
-                    // Add an authenticate button to Swagger for JWT tokens
-                    settings.OperationProcessors.Add(new OperationSecurityScopeProcessor("JWT token"));
-                    settings.AddSecurity("JWT token", Enumerable.Empty<string>(),
-                        new OpenApiSecurityScheme()
-                        {
-                            Type = OpenApiSecuritySchemeType.ApiKey,
-                            Name = nameof(Authorization),
-                            In = OpenApiSecurityApiKeyLocation.Header,
-                            Description = "Copy this into the value field: \nBearer {my long token}"
-                        }
-                    );
-                });
-            }
-
-            return services;
         }
     }
 }

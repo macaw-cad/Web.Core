@@ -36,7 +36,7 @@ namespace Acme.WebApp
             services.AddTransient<ProblemDetailsFactory, ErrorDetailsProblemDetailsFactory>(); // must be called after 'services.AddControllers();' as that is where the default factory is registered.            
 
             services.AddLogging();
-            services.ConfigureSwaggerDocWithoutVersioning(
+            services.ConfigureSwaggerDoc(
                 Configuration.GetValue<string>(AcmeConstants.Configuration.Swagger.Title),
                 Configuration.GetValue<string>(AcmeConstants.Configuration.Swagger.Description)
                 );
