@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Acme.Core\Acme.Core.csproj" />
     <ProjectReference Include="..\Web.Core.WebApi\Web.Core.WebApi.csproj" />
   </ItemGroup>
 
