@@ -43,6 +43,7 @@ namespace Acme.WebApp
 
             services.AddHealthChecks()
                 .AddApplicationInfoHealthCheck("Acme.WebApp")
+                .AddConfigurationValidationHealthCheck("configuration")
                 .AddApplicationEndpointsHealthCheck("ping", Configuration.GetSection(HealthCheckOptions.HealthCheckSectionName).Get<HealthCheckOptions>())
                 ;
 

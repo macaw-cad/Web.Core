@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Acme.WebApiLibrary.MoreData
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Acme.Core", "Acme.Core\Acme.Core.csproj", "{0D2937D5-D2C3-4A3F-89A4-35172256FC07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amce.WebSpa", "Amce.WebSpa\Amce.WebSpa.csproj", "{DCE5ACD6-61EA-48FC-927A-F14CAA18A129}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amce.WebSpa", "Amce.WebSpa\Amce.WebSpa.csproj", "{DCE5ACD6-61EA-48FC-927A-F14CAA18A129}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Acme Example", "Acme Example", "{0C10572E-40E1-4277-9CE9-01916CB25C5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{501F77D1-1ABA-4DB2-8323-2885105D6C56} = {0C10572E-40E1-4277-9CE9-01916CB25C5D}
+		{961FA54B-AB35-488A-B193-0E061DE69026} = {0C10572E-40E1-4277-9CE9-01916CB25C5D}
+		{AFE03BE3-39AF-446E-B06C-0EA772370F31} = {0C10572E-40E1-4277-9CE9-01916CB25C5D}
+		{4182D8E4-2FA6-4DFD-912C-13231E3B7069} = {0C10572E-40E1-4277-9CE9-01916CB25C5D}
+		{DCE5ACD6-61EA-48FC-927A-F14CAA18A129} = {0C10572E-40E1-4277-9CE9-01916CB25C5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA34226E-91DB-4750-B509-BDFD9366D53B}

@@ -44,6 +44,7 @@ namespace Amce.WebSpa
 
             services.AddHealthChecks()
                 .AddApplicationInfoHealthCheck("Acme.WebSpa")
+                .AddConfigurationValidationHealthCheck("configuration")
                 ;
 
             services.AddTransient<IConfigurationValidator, ConfigurationValidator>();

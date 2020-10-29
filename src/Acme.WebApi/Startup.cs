@@ -43,6 +43,7 @@ namespace Acme.WebApi
 
             services.AddHealthChecks()
                 .AddApplicationInfoHealthCheck("Acme.WebApi")
+                .AddConfigurationValidationHealthCheck("configuration")
                 ;
 
             services.AddTransient<IConfigurationValidator, ConfigurationValidator>();

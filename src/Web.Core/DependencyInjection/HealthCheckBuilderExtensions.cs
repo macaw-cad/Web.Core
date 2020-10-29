@@ -60,5 +60,22 @@ namespace Web.Core.DependencyInjection
 
             return builder;
         }
+
+        public static IHealthChecksBuilder AddConfigurationValidationHealthCheck(this IHealthChecksBuilder builder, string name, IEnumerable<string> tags = null)
+        {
+            if (builder is null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("Argument can not be null or empty string.", nameof(name));
+            }
+
+            builder.AddCheck<ConfigurationValidationHealthCheck>(name, tags: tags);
+
+            return builder;
+        }
     }
 }
