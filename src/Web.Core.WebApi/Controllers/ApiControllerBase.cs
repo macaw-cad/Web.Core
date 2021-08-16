@@ -61,7 +61,7 @@ namespace Web.Core.WebApi.Controllers
         [OpenApiIgnore]
         public NotFoundObjectResult NotFound<T>([ActionResultObjectValue] T errorDetails) where T : IErrorDetails
         {
-            return base.NotFound(ProblemDetailsFactory.CreateErrorProblemDetails(HttpContext, errorDetails));
+            return base.NotFound(ProblemDetailsFactory.CreateErrorProblemDetails(HttpContext, errorDetails, statusCode: 404));
         }
 
         [OpenApiIgnore]

@@ -43,7 +43,9 @@ namespace Web.Core.WebApi.Middleware
 
                 _loggerFactory.CreateLogger(categoryName.ToString()).LogError(ex, "An unexpected error occurred!");
 
-                if (context.Request.Headers["Accept"].ToString().Contains("application/json", StringComparison.OrdinalIgnoreCase))
+                var acceptHeader = context.Request.Headers["Accept"].ToString();
+                if ((acceptHeader?.Contains("application/json", StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (acceptHeader?.Equals("*/*", StringComparison.OrdinalIgnoreCase) ?? false))
                 {
                     await HandleExceptionAsync(context, ex, options.Value);
                 }
