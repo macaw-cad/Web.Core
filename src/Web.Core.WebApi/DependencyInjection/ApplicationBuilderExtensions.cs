@@ -30,12 +30,19 @@ namespace Web.Core.WebApi.DependencyInjection
 
             foreach(var assembly in documentationAssemblies)
             {
-                var assemblyLocation = assembly.Location;
+                var assemblyPath = Path.GetDirectoryName(assembly.Location);
+                if (string.IsNullOrEmpty(assemblyPath))
+                {
+                    throw new FileNotFoundException(
+                        $"Could not extract directoryName from assembly {assembly.Location}");
+                }
 
-                var xmlDocumentationFile = $"{Path.GetDirectoryName(assemblyLocation)}\\{Path.GetFileNameWithoutExtension(assemblyLocation)}.xml";
+                var xmlDocumentationFile = Path.Combine(assemblyPath, $"{Path.GetFileNameWithoutExtension(assembly.Location)}.xml");
                 if (!File.Exists(xmlDocumentationFile))
                 {
-                    throw new FileNotFoundException("For documentation to be shown in the Swagger UI make sure that XML documentation is generated on building the project. On the properties of the project enable 'Output - XML documentation file'. Keep the default output path for the documentation.", xmlDocumentationFile);
+                    throw new FileNotFoundException(
+                        "For documentation to be shown in the Swagger UI make sure that XML documentation is generated on building the project. On the properties of the project enable 'Output - XML documentation file'. Keep the default output path for the documentation.",
+                        xmlDocumentationFile);
                 }
             }
         }
