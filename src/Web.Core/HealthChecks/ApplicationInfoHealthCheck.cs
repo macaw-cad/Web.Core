@@ -24,6 +24,8 @@ namespace Web.Core.HealthChecks
             var data = new Dictionary<string, object>
             {
                 { "environment", _environment.EnvironmentName },
+                { "dotNetVersion", Environment.Version },
+                { "osVersion", Environment.OSVersion },
             };
 
             var applicationAssembly = Assembly.GetEntryAssembly();
